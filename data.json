@@ -1,0 +1,11 @@
+{
+  "channel": 1,
+  "version": "0.1.1",
+  "status": "ON",
+  "brightness": 5,
+  "led_port": 16,
+  "button_port": 12,
+  "TAG": "",
+  "description": "Single Turnout Board",
+  "type": "Single Aspect Signal"
+}
