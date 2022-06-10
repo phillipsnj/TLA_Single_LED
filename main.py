@@ -3,7 +3,7 @@ import gc
 from machine import Pin, PWM, UART
 from time import sleep
 import json
-from merg_tla_components import  tla_led, tla_turnout
+from merg_tla_components import tla_led, tla_servo
 
 config_file = 'data.json'
 
@@ -31,6 +31,8 @@ led_external1.position(100)
 
 button = Pin(data['button_port'], Pin.IN, Pin.PULL_UP)
 button_status = button.value()
+
+test_servo = tla_servo(5, 46)
 
 led_port = tla_led(data['led_port'])
 
@@ -121,6 +123,12 @@ def process_input(info):
 gc.collect()
 gc.threshold(gc.mem_free() // 4 + gc.mem_alloc())
 buffer = ""
+
+print("Move Servo")
+test_servo.move_position_fine(45, 130)
+sleep(1)
+test_servo.move_position_fine(130, 45)
+print("Moved Servo")
 
 while True:
     if button_status != button.value():

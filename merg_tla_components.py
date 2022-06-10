@@ -22,6 +22,25 @@ class tla_servo:
             # servoPin.duty_u16(int(newDuty))
             self.servoPin.duty_u16(degrees*50)
             self.servo_position = degrees
+
+    def move_position_fine(self, start, finish):
+        if start > finish :
+            movement = -1
+            from_position = start
+            to_position = finish
+            if from_position > 135 : from_position = 135
+            if to_position < 45 : to_position = 45
+        else :
+            movement = 1
+            from_position = finish
+            to_position = start
+            if from_position > 45: from_position = 45
+            if to_position < 135: to_position = 135
+
+        for position in range(from_position*50, to_position*50, movement):
+            self.servoPin.duty_u16(position)
+            sleep(0.001)
+
             
 class tla_led:
     def __init__(self, led_pin, *args, **kwargs):
