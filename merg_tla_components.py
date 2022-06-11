@@ -9,6 +9,9 @@ class tla_servo:
         self.servoPin = PWM(Pin(servo_pin))
         self.servoPin.freq(50)
         self.position(self.servo_position)
+
+    def stall(self):
+        self.servoPin.duty_u16(0)
         
     def position(self, degrees):
         if degrees == 0:
@@ -23,23 +26,33 @@ class tla_servo:
             self.servoPin.duty_u16(degrees*50)
             self.servo_position = degrees
 
-    def move_position_fine(self, start, finish):
+    def move_position(self, start, finish, duration):
+        #duration = 5
         if start > finish :
-            movement = -1
-            from_position = start
-            to_position = finish
-            if from_position > 135 : from_position = 135
-            if to_position < 45 : to_position = 45
+            #movement = -1
+            if start > 135 : start = 135
+            if finish < 45 : finish = 45
+            from_position = start * 50
+            to_position = finish * 50
+            movement = (from_position - to_position)
+            movement = movement/duration
+            movement = movement*0.02*-1
+            movement = int(movement)
         else :
-            movement = 1
-            from_position = finish
-            to_position = start
-            if from_position > 45: from_position = 45
-            if to_position < 135: to_position = 135
+            #movement = 1
+            if finish > 135: finish = 135
+            if start < 45: start = 45
+            from_position = start * 50
+            to_position = finish * 50
+            movement = (from_position - to_position)
+            movement = movement / duration*-1
+            movement = int(movement * 0.02)
 
-        for position in range(from_position*50, to_position*50, movement):
+        print(f"Movement : {movement} - {from_position}::{to_position}")
+
+        for position in range(from_position, to_position, movement):
             self.servoPin.duty_u16(position)
-            sleep(0.001)
+            sleep(0.02)
 
             
 class tla_led:

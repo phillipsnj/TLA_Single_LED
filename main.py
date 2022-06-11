@@ -125,9 +125,13 @@ gc.threshold(gc.mem_free() // 4 + gc.mem_alloc())
 buffer = ""
 
 print("Move Servo")
-test_servo.move_position_fine(45, 130)
+test_servo.move_position(45, 130, 10)
 sleep(1)
-test_servo.move_position_fine(130, 45)
+test_servo.move_position(130, 45, 5)
+sleep(1)
+test_servo.move_position(45, 130, 20)
+sleep(1)
+test_servo.move_position(130, 45, 1)
 print("Moved Servo")
 
 while True:
